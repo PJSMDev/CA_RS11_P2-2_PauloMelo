@@ -1,4 +1,13 @@
+using ClientManagement.DAL;
+using Microsoft.EntityFrameworkCore;
+
 var builder = WebApplication.CreateBuilder(args);
+
+var connectionString =
+    builder.Configuration.GetConnectionString("Clientmanagement_ConnectionString");
+
+builder.Services.AddDbContext<ClientManagementDbContext>(options =>
+options.UseSqlServer(connectionString));
 
 // Add services to the container.
 builder.Services.AddControllersWithViews();
