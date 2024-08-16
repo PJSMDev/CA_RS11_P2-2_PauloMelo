@@ -4,29 +4,34 @@ using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClientManagement.Models
 {
-    #region ClientService Model
-
     /// <summary>
-    /// Represents the association between a client and a service.
+    /// Represents a service selected by a client.
     /// </summary>
     public class ClientService
     {
         #region Properties
 
         /// <summary>
-        /// Gets or sets the client identifier.
+        /// Gets or sets the unique identifier for the client service.
         /// </summary>
-        [Key, Column(Order = 0)]
+        [Key]
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ClientServiceId { get; set; } // Primary key
+
+        /// <summary>
+        /// Gets or sets the unique identifier of the client.
+        /// </summary>
+        [Required]
         public int ClientId { get; set; }
 
         /// <summary>
-        /// Gets or sets the service identifier.
+        /// Gets or sets the unique identifier of the service.
         /// </summary>
-        [Key, Column(Order = 1)]
+        [Required]
         public int ServiceId { get; set; }
 
         /// <summary>
-        /// Gets or sets the date when the service was used.
+        /// Gets or sets the date when the service was provided.
         /// </summary>
         public DateTime ServiceDate { get; set; }
 
@@ -35,17 +40,15 @@ namespace ClientManagement.Models
         #region Navigational Properties
 
         /// <summary>
-        /// Gets or sets the client associated with the service.
+        /// Gets or sets the client who selected the service.
         /// </summary>
-        public Client Client { get; set; }
+        public Client Client { get; set; } = new Client();
 
         /// <summary>
-        /// Gets or sets the service associated with the client.
+        /// Gets or sets the service selected by the client.
         /// </summary>
-        public Service Service { get; set; }
+        public Service Service { get; set; } = new Service();
 
         #endregion
     }
-
-    #endregion
 }

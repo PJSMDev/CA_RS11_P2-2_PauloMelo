@@ -21,7 +21,7 @@ namespace ClientManagement.Models
         /// Gets or sets the unique identifier of the client who made the payment.
         /// </summary>
         [Required]
-        public int ClientId { get; set; } // Foreign key to Client
+        public int ClientId { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of money paid.
@@ -37,7 +37,7 @@ namespace ClientManagement.Models
         /// <summary>
         /// Gets or sets the client who made the payment.
         /// </summary>
-        public Client Client { get; set; }
+        public Client Client { get; set; } = new Client();
 
         #endregion
     }

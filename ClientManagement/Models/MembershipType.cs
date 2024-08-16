@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
-using ClientManagement.Enums; 
+using ClientManagement.Enums;
 
 namespace ClientManagement.Models
 {
@@ -37,7 +37,7 @@ namespace ClientManagement.Models
         public bool IsRecurring { get; set; }
 
         /// <summary>
-        /// Gets or sets the number of loyalty months for the membership type.
+        /// Gets or sets the number of loyalty months required for the membership type.
         /// </summary>
         public int? LoyaltyMonths { get; set; }
 

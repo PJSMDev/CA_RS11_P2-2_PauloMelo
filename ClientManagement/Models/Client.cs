@@ -24,14 +24,14 @@ namespace ClientManagement.Models
         /// </summary>
         [Required]
         [StringLength(100)]
-        public string Name { get; set; }
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the email address of the client.
         /// </summary>
         [Required]
         [EmailAddress]
-        public string Email { get; set; }
+        public string Email { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the date of birth of the client.
@@ -43,7 +43,7 @@ namespace ClientManagement.Models
         /// Gets or sets the phone number of the client.
         /// </summary>
         [Phone]
-        public string PhoneNumber { get; set; }
+        public string PhoneNumber { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the type of membership for the client.
@@ -63,12 +63,12 @@ namespace ClientManagement.Models
         /// <summary>
         /// Gets or sets the membership type associated with the client.
         /// </summary>
-        public MembershipType MembershipType { get; set; }
+        public MembershipType MembershipType { get; set; } = new MembershipType();
 
         /// <summary>
         /// Gets or sets the collection of services used by the client.
         /// </summary>
-        public ICollection<ClientService> ClientServices { get; set; }
+        public ICollection<ClientService> ClientServices { get; set; } = new List<ClientService>();
 
         #endregion
     }

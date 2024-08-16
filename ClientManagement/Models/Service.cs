@@ -1,10 +1,9 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 
 namespace ClientManagement.Models
 {
-    #region Service Model
-
     /// <summary>
     /// Represents a service offered by the gym.
     /// </summary>
@@ -16,23 +15,32 @@ namespace ClientManagement.Models
         /// Gets or sets the unique identifier for the service.
         /// </summary>
         [Key]
-        public int ServiceId { get; set; }
+        [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
+        public int ServiceId { get; set; } // Primary key
 
         /// <summary>
-        /// Gets or sets the name of the service (e.g., Personal Training, Yoga).
+        /// Gets or sets the name of the service.
         /// </summary>
         [Required]
-        [MaxLength(100)] 
-        public string Name { get; set; }
+        [MaxLength(100)]
+        public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the price of the service.
         /// </summary>
-        [Column(TypeName = "decimal(18,2)")]
+        [Required]
+        [DataType(DataType.Currency)]
         public decimal Price { get; set; }
 
         #endregion
-    }
 
-    #endregion
+        #region Navigational Properties
+
+        /// <summary>
+        /// Gets or sets the client services associated with this service.
+        /// </summary>
+        public ICollection<ClientService> ClientServices { get; set; } = new List<ClientService>();
+
+        #endregion
+    }
 }

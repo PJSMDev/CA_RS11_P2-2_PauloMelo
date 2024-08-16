@@ -18,11 +18,11 @@ namespace ClientManagement.DAL
         }
 
         // DbSets for each entity in the model
-        public DbSet<Client> Clients { get; set; }
-        public DbSet<MembershipType> MembershipTypes { get; set; }
-        public DbSet<Service> Services { get; set; }
-        public DbSet<ClientService> ClientServices { get; set; }
-        public DbSet<Payment> Payments { get; set; }
+        public DbSet<Client> Clients { get; set; } = null!;
+        public DbSet<MembershipType> MembershipTypes { get; set; } = null!;
+        public DbSet<Service> Services { get; set; } = null!;
+        public DbSet<ClientService> ClientServices { get; set; } = null!;
+        public DbSet<Payment> Payments { get; set; } = null!;
 
         /// <summary>
         /// Configures the model creating process.
