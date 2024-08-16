@@ -22,33 +22,33 @@ namespace ClientManagement.Models
         /// <summary>
         /// Gets or sets the name of the client.
         /// </summary>
-        [Required]
-        [StringLength(100)]
+        [Required(ErrorMessage = "The name field is required.")]
+        [StringLength(100, ErrorMessage = "The name cannot be longer than 100 characters.")]
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the email address of the client.
         /// </summary>
-        [Required]
-        [EmailAddress]
+        [Required(ErrorMessage = "The email field is required.")]
+        [EmailAddress(ErrorMessage = "Invalid email address.")]
         public string Email { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the date of birth of the client.
         /// </summary>
-        [DataType(DataType.Date)]
+        [DataType(DataType.Date, ErrorMessage = "Invalid date format.")]
         public DateTime DateOfBirth { get; set; }
 
         /// <summary>
         /// Gets or sets the phone number of the client.
         /// </summary>
-        [Phone]
+        [Phone(ErrorMessage = "Invalid phone number.")]
         public string PhoneNumber { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the type of membership for the client.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The membership type is required.")]
         public int MembershipTypeId { get; set; }
 
         /// <summary>

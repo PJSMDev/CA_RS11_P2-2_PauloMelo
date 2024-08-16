@@ -16,23 +16,24 @@ namespace ClientManagement.Models
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ClientServiceId { get; set; } // Primary key
+        public int ClientServiceId { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier of the client.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The client ID is required.")]
         public int ClientId { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier of the service.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The service ID is required.")]
         public int ServiceId { get; set; }
 
         /// <summary>
         /// Gets or sets the date when the service was provided.
         /// </summary>
+        [DataType(DataType.Date, ErrorMessage = "Invalid date format.")]
         public DateTime ServiceDate { get; set; }
 
         #endregion

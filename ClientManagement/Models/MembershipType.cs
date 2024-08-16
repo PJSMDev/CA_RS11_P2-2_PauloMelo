@@ -22,13 +22,13 @@ namespace ClientManagement.Models
         /// <summary>
         /// Gets or sets the name of the membership type (e.g., MonthlyLoyal, MonthlyNonLoyal, PayPerSession).
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The membership type name is required.")]
         public MembershipTypeEnum MembershipTypeName { get; set; }
 
         /// <summary>
         /// Gets or sets the price associated with the membership type.
         /// </summary>
-        [Column(TypeName = "decimal(18,2)")]
+        [Required(ErrorMessage = "The price is required.")]
         public decimal Price { get; set; }
 
         /// <summary>

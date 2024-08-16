@@ -16,20 +16,19 @@ namespace ClientManagement.Models
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int ServiceId { get; set; } // Primary key
+        public int ServiceId { get; set; }
 
         /// <summary>
         /// Gets or sets the name of the service.
         /// </summary>
-        [Required]
-        [MaxLength(100)]
+        [Required(ErrorMessage = "The name field is required.")]
+        [StringLength(100, ErrorMessage = "The name cannot be longer than 100 characters.")]
         public string Name { get; set; } = string.Empty;
 
         /// <summary>
         /// Gets or sets the price of the service.
         /// </summary>
-        [Required]
-        [DataType(DataType.Currency)]
+        [Required(ErrorMessage = "The price field is required.")]
         public decimal Price { get; set; }
 
         #endregion
@@ -37,7 +36,7 @@ namespace ClientManagement.Models
         #region Navigational Properties
 
         /// <summary>
-        /// Gets or sets the client services associated with this service.
+        /// Gets or sets the collection of client services associated with this service.
         /// </summary>
         public ICollection<ClientService> ClientServices { get; set; } = new List<ClientService>();
 

@@ -15,19 +15,18 @@ namespace ClientManagement.Models
         /// </summary>
         [Key]
         [DatabaseGenerated(DatabaseGeneratedOption.Identity)]
-        public int PaymentId { get; set; } // Primary key
+        public int PaymentId { get; set; }
 
         /// <summary>
         /// Gets or sets the unique identifier of the client who made the payment.
         /// </summary>
-        [Required]
+        [Required(ErrorMessage = "The client ID is required.")]
         public int ClientId { get; set; }
 
         /// <summary>
         /// Gets or sets the amount of money paid.
         /// </summary>
-        [Required]
-        [DataType(DataType.Currency)]
+        [Required(ErrorMessage = "The amount is required.")]
         public decimal Amount { get; set; }
 
         #endregion
