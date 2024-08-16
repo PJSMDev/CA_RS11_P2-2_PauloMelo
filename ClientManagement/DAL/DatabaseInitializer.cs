@@ -1,4 +1,7 @@
-﻿using System.Linq;
+﻿using System;
+using System.Collections.Generic;
+using ClientManagement.Enums;
+using System.Linq;
 using ClientManagement.Models;
 
 namespace ClientManagement.DAL
@@ -18,8 +21,8 @@ namespace ClientManagement.DAL
         {
             context.Database.EnsureCreated();
 
-            // Check if any services already exist
-            if (context.Services.Any())
+            // Check if any clients already exist
+            if (context.Clients.Any())
             {
                 return; // DB has been seeded
             }
@@ -33,36 +36,57 @@ namespace ClientManagement.DAL
         #region Private Methods
 
         /// <summary>
-        /// Seeds the database with a predefined list of services.
+        /// Seeds the database with predefined clients, services, and membership types.
         /// </summary>
         /// <param name="context">The database context to seed.</param>
         private static void SeedDatabase(ClientManagementDbContext context)
         {
+            // Define Membership Types
+            var monthlyLoyalMembership = new MembershipType
+            {
+                MembershipTypeName = MembershipTypeEnum.MonthlyLoyal
+            };
+
+            var payPerSessionMembership = new MembershipType
+            {
+                MembershipTypeName = MembershipTypeEnum.PayPerSession
+            };
+
+            // Add Membership Types to Database
+            context.MembershipTypes.AddRange(monthlyLoyalMembership, payPerSessionMembership);
+
+            // Seed Clients
+            var clients = new[]
+            {
+                new Client
+                {
+                    Name = "John Monthly",
+                    Email = "johnmonthly@example.com",
+                    PhoneNumber = "123-456-7890",
+                    MembershipTypeId = 1 // Cliente com contrato mensal
+                },
+                new Client
+                {
+                    Name = "Jane Session",
+                    Email = "janesession@example.com",
+                    PhoneNumber = "098-765-4321",
+                    MembershipTypeId = 2 // Cliente com pagamento por sessão
+                }
+            };
+
+            context.Clients.AddRange(clients);
+
+            // Seed Services
             var services = new[]
             {
                 new Service { Name = "Personal Training", Price = 50m },
-                new Service { Name = "Yoga", Price = 30m },
-                new Service { Name = "Pilates", Price = 40m },
-                new Service { Name = "Zumba", Price = 35m },
-                new Service { Name = "Spinning", Price = 45m },
-                new Service { Name = "HIIT", Price = 50m },
-                new Service { Name = "Kickboxing", Price = 55m },
-                new Service { Name = "CrossFit", Price = 60m },
-                new Service { Name = "Body Pump", Price = 50m },
-                new Service { Name = "Cardio Kick", Price = 40m },
-                new Service { Name = "Strength Training", Price = 55m },
-                new Service { Name = "Aqua Aerobics", Price = 30m },
-                new Service { Name = "Dance Fitness", Price = 35m },
-                new Service { Name = "Stretch & Relax", Price = 25m },
-                new Service { Name = "Functional Training", Price = 50m },
-                new Service { Name = "Group Cycling", Price = 45m },
-                new Service { Name = "Boxing", Price = 50m },
-                new Service { Name = "Meditation", Price = 20m },
-                new Service { Name = "Nutrition Counseling", Price = 70m }
+                new Service { Name = "Yoga", Price = 30m }
+                // Adicione mais serviços conforme necessário
             };
 
-            // Add the services to the database
             context.Services.AddRange(services);
+
+            // Salva as mudanças no banco de dados
             context.SaveChanges();
         }
 
