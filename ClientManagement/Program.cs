@@ -1,5 +1,5 @@
 using ClientManagement.DAL;
-using ClientManagement.BusinessLogic; // Importar o namespace para DiscountService
+using ClientManagement.BusinessLogic;
 using Microsoft.EntityFrameworkCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -11,7 +11,7 @@ var connectionString = builder.Configuration.GetConnectionString("Clientmanageme
 builder.Services.AddDbContext<ClientManagementDbContext>(options =>
     options.UseSqlServer(connectionString));
 
-// Registrar o DiscountService
+// Adicionar o DiscountService ao contêiner
 builder.Services.AddTransient<DiscountService>();
 
 // Adicionar serviços ao contêiner
