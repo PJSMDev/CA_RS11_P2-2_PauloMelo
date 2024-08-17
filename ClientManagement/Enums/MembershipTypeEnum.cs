@@ -5,8 +5,8 @@
     /// </summary>
     public enum MembershipTypeEnum
     {
-        MonthlyLoyal,
-        MonthlyNonLoyal,
-        PayPerSession
+        MonthlyLoyal = 1,
+        MonthlyNonLoyal = 2,
+        PayPerSession = 3
     }
 }

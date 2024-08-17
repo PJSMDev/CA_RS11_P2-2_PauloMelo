@@ -35,20 +35,45 @@ namespace ClientManagement.DAL
             // Configuration for the Payment entity
             modelBuilder.Entity<Payment>()
                 .Property(p => p.Amount)
-                .HasColumnType("decimal(18,2)") // Precision and scale for Amount
-                .HasComment("The amount of money paid."); // Optional comment
+                .HasColumnType("decimal(18,2)")
+                .HasComment("The amount of money paid.");
 
             // Configuration for the Service entity
             modelBuilder.Entity<Service>()
                 .Property(s => s.Price)
-                .HasColumnType("decimal(18,2)") // Precision and scale for Price
-                .HasComment("The price of the service."); // Optional comment
+                .HasColumnType("decimal(18,2)")
+                .HasComment("The price of the service.");
 
             // Configuration for the MembershipType entity
             modelBuilder.Entity<MembershipType>()
                 .Property(m => m.Price)
-                .HasColumnType("decimal(18,2)") // Precision and scale for Price
-                .HasComment("The price associated with the membership type."); // Optional comment
+                .HasColumnType("decimal(18,2)")
+                .HasComment("The price associated with the membership type.");
+
+            // Configure one-to-many relationship between Client and MembershipType
+            modelBuilder.Entity<Client>()
+                .HasOne(c => c.MembershipType)
+                .WithMany()
+                .HasForeignKey(c => c.MembershipTypeId)
+                .OnDelete(DeleteBehavior.Restrict);
+
+            // Configure many-to-many relationship between Client and Service via ClientService
+            modelBuilder.Entity<ClientService>()
+                .HasOne(cs => cs.Client)
+                .WithMany(c => c.ClientServices)
+                .HasForeignKey(cs => cs.ClientId);
+
+            modelBuilder.Entity<ClientService>()
+                .HasOne(cs => cs.Service)
+                .WithMany(s => s.ClientServices)
+                .HasForeignKey(cs => cs.ServiceId);
+
+            // Configure one-to-many relationship between Payment and Client
+            modelBuilder.Entity<Payment>()
+                .HasOne(p => p.Client)
+                .WithMany()
+                .HasForeignKey(p => p.ClientId)
+                .OnDelete(DeleteBehavior.Restrict);
         }
     }
 }

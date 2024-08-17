@@ -12,8 +12,8 @@ using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 namespace ClientManagement.Migrations
 {
     [DbContext(typeof(ClientManagementDbContext))]
-    [Migration("20240816225825_UpdatedModel")]
-    partial class UpdatedModel
+    [Migration("20240817194641_FixedRelationships")]
+    partial class FixedRelationships
     {
         protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
@@ -162,7 +162,7 @@ namespace ClientManagement.Migrations
                     b.HasOne("ClientManagement.Models.MembershipType", "MembershipType")
                         .WithMany()
                         .HasForeignKey("MembershipTypeId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("MembershipType");
@@ -192,7 +192,7 @@ namespace ClientManagement.Migrations
                     b.HasOne("ClientManagement.Models.Client", "Client")
                         .WithMany()
                         .HasForeignKey("ClientId")
-                        .OnDelete(DeleteBehavior.Cascade)
+                        .OnDelete(DeleteBehavior.Restrict)
                         .IsRequired();
 
                     b.Navigation("Client");
