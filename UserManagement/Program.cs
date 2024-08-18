@@ -7,6 +7,7 @@ class Program
 {
     static UserManager userManager = new UserManager();
     static User loggedInUser;
+    static IUserMenu userMenu;
 
     static void Main()
     {
@@ -20,7 +21,7 @@ class Program
             }
             else
             {
-                ShowUserMenu();
+                userMenu.ShowMenu();
             }
         }
     }
@@ -29,9 +30,9 @@ class Program
     {
         ConsoleUtility.WriteTitle("Login Menu", ConsoleColor.Green, "\n", "\n");
 
-        ConsoleUtility.WriteMessage("1. Login\n2. Exit", ConsoleColor.White, "\n", "\n\n"); // Cor padrão
+        ConsoleUtility.WriteMessage("1. Login\n2. Exit", ConsoleColor.White, "\n", "\n\n");
         ConsoleUtility.WriteMessage("Select an option: ");
-        Console.ResetColor(); // Reseta a cor para o padrão após o prompt
+        Console.ResetColor();
 
         string option = Console.ReadLine();
 
@@ -65,8 +66,9 @@ class Program
         if (user != null && user.Password == password)
         {
             loggedInUser = user;
+            SetUserMenu(loggedInUser.Role); // Configura o menu com base no tipo de usuário
             ConsoleUtility.WriteTitle($"Welcome {loggedInUser.FullName}", GetUserColor(loggedInUser.Role), "", "\n");
-            Console.Clear(); // Clear the screen after successful login
+            Console.Clear();
         }
         else
         {
@@ -74,42 +76,21 @@ class Program
         }
     }
 
-    static void ShowUserMenu()
+    static void SetUserMenu(UserRole role)
     {
-        ConsoleUtility.WriteTitle("User Menu", GetUserColor(loggedInUser.Role), "", "\n\n");
-
-        // Menus e prompts não coloridos, com espaçamento
-        ConsoleUtility.WriteMessage("1. List Users\n2. Change Password\n3. Logout\n0. Exit", ConsoleColor.White, "", "\n\n"); // Cor padrão
-
-        // Define o prompt com a cor do usuário logado
-        Console.ForegroundColor = GetUserColor(loggedInUser.Role);
-        Console.Write($"{loggedInUser.UserName}> ");
-        Console.ResetColor(); // Reseta a cor para o padrão após o prompt
-
-        string option = Console.ReadLine();
-
-        switch (option)
+        switch (role)
         {
-            case "1":
-                Console.Clear();
-                userManager.ListUsers();
-                ConsoleUtility.PauseConsole();
+            case UserRole.Admin:
+                userMenu = new AdminMenu(userManager, loggedInUser);
                 break;
-            case "2":
-                ChangePassword();
+            case UserRole.PowerUser:
+                userMenu = new PowerUserMenu(userManager, loggedInUser);
                 break;
-            case "3":
-                loggedInUser = null;
-                ConsoleUtility.WriteMessage("Logged out successfully.\n", ConsoleColor.Cyan);
-                ConsoleUtility.PauseConsole();
-                break;
-            case "0":
-                Environment.Exit(0);
+            case UserRole.SimpleUser:
+                userMenu = new SimpleUserMenu(userManager, loggedInUser);
                 break;
             default:
-                ConsoleUtility.WriteMessage("Invalid option. Please try again.\n", ConsoleColor.Red);
-                ConsoleUtility.PauseConsole();
-                break;
+                throw new InvalidOperationException("Unknown user role.");
         }
     }
 
@@ -126,19 +107,5 @@ class Program
             default:
                 return ConsoleColor.White;
         }
-    }
-
-    static void ChangePassword()
-    {
-        ConsoleUtility.WriteTitle("Change Password", GetUserColor(loggedInUser.Role), "\n\n", "\n");
-
-        ConsoleUtility.WriteMessage("Enter new password: ", GetUserColor(loggedInUser.Role));
-        string newPassword = ConsoleUtility.ReadPassword();
-
-        // Aqui você pode adicionar a lógica para atualizar a senha no UserManager
-
-        ConsoleUtility.WriteMessage("Password changed successfully.\n", ConsoleColor.Green);
-        ConsoleUtility.PauseConsole();
-        Console.Clear();
     }
 }
