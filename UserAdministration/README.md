@@ -6,12 +6,12 @@ Para facilitar o acesso à aplicação, aqui estão as credenciais de login:
 
 ### Credenciais Administrador
 - **Nome de Usuário:** admin
-- **Senha:** [SuaSenhaAqui]
+- **Password:** [SuaSenhaAqui]
 
 ### Credenciais Power User
 - **Nome de Usuário:** poweruser
-- **Senha:** [SuaSenhaAqui]
+- **Password:** [SuaSenhaAqui]
 
 ### Credenciais Simple User
 - **Nome de Usuário:** simpleuser
-- **Senha:** [SuaSenhaAqui]
+- **Password:** [SuaSenhaAqui]
