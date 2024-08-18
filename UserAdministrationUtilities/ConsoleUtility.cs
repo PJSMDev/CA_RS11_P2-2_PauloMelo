@@ -7,6 +7,8 @@
     public class ConsoleUtility
     {
 
+        #region Public Methods
+
         /// <summary>
         /// Sets the console output encoding to UTF-8 to support Unicode characters.
         /// </summary>
@@ -123,5 +125,7 @@
             Console.WriteLine();
             return password;
         }
+
+        #endregion
     }
 }

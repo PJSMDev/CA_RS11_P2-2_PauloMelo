@@ -14,6 +14,9 @@
  ### Credenciais Simple User
  - **Nome de Usuário:** simpleuser
  - **Password:** [SuaSenhaAqui]
+
+ ## Link para o GitHub do projeto ##
+ https://github.com/PJSMDev/CA_RS11_P2-2_PauloMelo
 */
 
 using System;
