@@ -46,8 +46,9 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Services\AdminMenu.cs" />
     <Compile Include="Services\IUserMenu.cs" />
+    <Compile Include="Services\LoginMenu.cs" />
     <Compile Include="Services\PowerUserMenu.cs" />
-    <Compile Include="Services\SimpleUser.cs" />
+    <Compile Include="Services\SimpleUserMenu.cs" />
     <Compile Include="Services\UserManager.cs" />
     <Compile Include="Utility\ConsoleUtility.cs" />
   </ItemGroup>

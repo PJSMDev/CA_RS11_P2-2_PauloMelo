@@ -1,4 +1,4 @@
-﻿namespace UserManagementLibrary.Services
+﻿namespace UserManagementLibrary.Menus
 {
     public interface IUserMenu
     {

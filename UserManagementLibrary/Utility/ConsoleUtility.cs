@@ -47,7 +47,6 @@ namespace UserManagementLibrary.Utility
             Console.ForegroundColor = ConsoleColor.White;  // Restaura a cor padrão
         }
 
-
         public static string ReadPassword()
         {
             string password = "";
