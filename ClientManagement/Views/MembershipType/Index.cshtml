@@ -1,0 +1,40 @@
+﻿@model IEnumerable<ClientManagement.Models.MembershipType>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<h1 class="centered">Membership Types List</h1>
+
+<p>
+    <a asp-action="Create" class="btn btn-success">Create New</a>
+</p>
+<table class="table">
+    <thead>
+        <tr>
+            <th>@Html.DisplayNameFor(model => model.MembershipTypeId)</th>
+            <th>@Html.DisplayNameFor(model => model.MembershipTypeName)</th>
+            <th>@Html.DisplayNameFor(model => model.Price)</th>
+            <th>@Html.DisplayNameFor(model => model.IsRecurring)</th>
+            <th>@Html.DisplayNameFor(model => model.LoyaltyMonths)</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td>@Html.DisplayFor(modelItem => item.MembershipTypeId)</td>
+                <td>@Html.DisplayFor(modelItem => item.MembershipTypeName)</td>
+                <td>@Html.DisplayFor(modelItem => item.Price)</td>
+                <td>@Html.DisplayFor(modelItem => item.IsRecurring)</td>
+                <td>@Html.DisplayFor(modelItem => item.LoyaltyMonths)</td>
+                <td>
+                    <a asp-action="Edit" asp-route-id="@item.MembershipTypeId" class="btn btn-warning">Edit</a> |
+                    <a asp-action="Details" asp-route-id="@item.MembershipTypeId" class="btn btn-info">Details</a> |
+                    <a asp-action="Delete" asp-route-id="@item.MembershipTypeId" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
