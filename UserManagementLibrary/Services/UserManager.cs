@@ -8,23 +8,24 @@ namespace UserManagementLibrary.Services
     public class UserManager
     {
         private List<User> users;
+        private int nextId;
 
         public UserManager()
         {
             users = new List<User>();
+            nextId = 1; // Inicia o ID a partir de 1
             SeedData(); // Método para criar dados de teste
         }
 
-        // Adiciona um novo usuário à lista
         public void AddUser(User user)
         {
+            user.Id = nextId++; // Atribui o ID e incrementa para o próximo usuário
             users.Add(user);
         }
 
-        // Atualiza um usuário existente
         public void UpdateUser(User user)
         {
-            var existingUser = users.FirstOrDefault(u => u.UserName == user.UserName);
+            var existingUser = users.FirstOrDefault(u => u.Id == user.Id);
             if (existingUser != null)
             {
                 existingUser.FullName = user.FullName;
@@ -33,25 +34,21 @@ namespace UserManagementLibrary.Services
             }
         }
 
-        // Busca um usuário pelo username
         public User GetUser(string username)
         {
             return users.FirstOrDefault(u => u.UserName == username);
         }
 
-        // Busca um usuário pelo ID
         public User GetUserById(int id)
         {
             return users.FirstOrDefault(u => u.Id == id);
         }
 
-        // Busca usuários pelo nome completo
         public IEnumerable<User> SearchUsersByFullName(string fullName)
         {
-            return users.Where(u => u.FullName.Contains(fullName, StringComparison.OrdinalIgnoreCase));
+            return users.Where(u => u.FullName.IndexOf(fullName, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
-        // Lista todos os usuários
         public void ListUsers()
         {
             foreach (var user in users)
@@ -60,12 +57,11 @@ namespace UserManagementLibrary.Services
             }
         }
 
-        // Método para criar dados de teste
         private void SeedData()
         {
-            users.Add(new User { Id = 1, FullName = "Jeremias Freitas Resende", UserName = "ADjeremias24", Password = "queroferias", Role = UserRole.Admin });
-            users.Add(new User { Id = 2, FullName = "Antónia Amaral Dias", UserName = "PUantonia13", Password = "tbqueroferias", Role = UserRole.PowerUser });
-            users.Add(new User { Id = 3, FullName = "Marcelo Rebelo Sousa", UserName = "SUmarcelo02", Password = "feriasopoano", Role = UserRole.SimpleUser });
+            AddUser(new User { FullName = "Jeremias Freitas Resende", UserName = "ADjeremias24", Password = "queroferias", Role = UserRole.Admin });
+            AddUser(new User { FullName = "Antónia Amaral Dias", UserName = "PUantonia13", Password = "tbqueroferias", Role = UserRole.PowerUser });
+            AddUser(new User { FullName = "Marcelo Rebelo Sousa", UserName = "SUmarcelo02", Password = "feriasopoano", Role = UserRole.SimpleUser });
         }
     }
 }
