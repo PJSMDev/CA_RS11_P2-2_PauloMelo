@@ -6,16 +6,16 @@ UserAdministration is a console based back-end app that provides user informatio
 
 # User Management System
 
-## Credenciais de Teste
+## Test Login Credentials
 
-### Administrador
-- **UserName:** admin
-- **Password:** admin
+### Administrator
+- **UserName:** jeremias24
+- **Password:** queroferias
 
 ### Power User
-- **UserName:** poweruser
-- **Password:** poweruser
+- **UserName:** antonia13
+- **Password:** tbqueroferias
 
 ### Simple User
-- **UserName:** simpleuser
-- **Password:** simpleuser
+- **UserName:** marcelo02
+- **Password:** feriasopoano
