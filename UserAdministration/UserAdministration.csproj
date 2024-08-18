@@ -49,5 +49,11 @@
   <ItemGroup>
     <None Include="App.config" />
   </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\UserAdministrationUtilities\UserAdministrationUtilities.csproj">
+      <Project>{74026d98-cc44-41ed-8224-0a74e70593ba}</Project>
+      <Name>UserAdministrationUtilities</Name>
+    </ProjectReference>
+  </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
 </Project>
