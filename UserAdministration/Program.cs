@@ -25,13 +25,30 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using UserAdministrationUtilities;
+using Menus;
+using Services;
 
 namespace UserAdministration
 {
+
+    /// <summary>
+    /// Main entry point for the User Administration console application.
+    /// </summary>
     internal class Program
     {
+
+        #region Fields
+
+        private static IUserService userService;
+
+        #endregion
+
+        #region Main Method
+
         static void Main(string[] args)
         {
+
+
             
         }
     }

@@ -7,7 +7,7 @@
     public class ConsoleUtility
     {
 
-        #region Public Methods
+        #region Console Settings
 
         /// <summary>
         /// Sets the console output encoding to UTF-8 to support Unicode characters.
@@ -16,6 +16,10 @@
         {
             Console.OutputEncoding = System.Text.Encoding.UTF8;
         }
+
+        #endregion
+
+        #region Console Output
 
         /// <summary>
         /// Writes a formatted title to the console.
