@@ -7,7 +7,7 @@ namespace UserManagementLibrary.Services
 {
     public class UserManager
     {
-        private readonly List<User> users;
+        private List<User> users;
 
         public UserManager()
         {
@@ -22,11 +22,6 @@ namespace UserManagementLibrary.Services
         public User GetUser(string username)
         {
             return users.FirstOrDefault(u => u.UserName.Equals(username, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public IEnumerable<User> SearchUsersByFullName(string fullName)
-        {
-            return users.Where(u => u.FullName.IndexOf(fullName, StringComparison.OrdinalIgnoreCase) >= 0);
         }
 
         public IEnumerable<User> GetAllUsers()

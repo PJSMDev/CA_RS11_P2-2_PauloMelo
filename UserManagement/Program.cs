@@ -1,8 +1,8 @@
 ﻿using System;
-using UserManagementLibrary.Menus;
 using UserManagementLibrary.Models;
 using UserManagementLibrary.Services;
-using UserManagementLibrary.Utility; // Para ConsoleUtility
+using UserManagementLibrary.Menus;
+using UserManagementLibrary.Utility;
 
 class Program
 {
@@ -15,12 +15,18 @@ class Program
         while (true)
         {
             IUserMenu menu;
+
             if (loggedInUser == null)
             {
-                menu = new LoginMenu(userManager);
+                var loginMenu = new LoginMenu(userManager);
+                loginMenu.ShowMenu();
+
+                // Atualiza o usuário logado após um login bem-sucedido
+                loggedInUser = loginMenu.LoggedInUser;
             }
             else
             {
+                // Exibe o menu baseado no tipo de usuário
                 switch (loggedInUser.Role)
                 {
                     case UserRole.Admin:
@@ -35,9 +41,12 @@ class Program
                     default:
                         throw new InvalidOperationException("Unknown user role.");
                 }
-            }
 
-            menu.ShowMenu();
+                menu.ShowMenu();
+
+                // Após a execução do menu, permita o logout ou finalize o programa
+                loggedInUser = null; // Define como null para permitir novo login
+            }
         }
     }
 }

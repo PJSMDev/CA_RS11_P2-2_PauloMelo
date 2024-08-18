@@ -39,7 +39,6 @@ namespace UserManagementLibrary.Utility
 
         public static void PauseConsole()
         {
-            Console.Clear();  // Limpa o console para preparar o próximo menu
             Console.ForegroundColor = ConsoleColor.Red;
             WriteMessage("\nPress any key to continue...", ConsoleColor.Red);  // Mensagem em vermelho
             Console.ReadKey();  // Aguarda uma tecla
