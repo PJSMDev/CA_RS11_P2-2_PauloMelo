@@ -2,9 +2,6 @@
 
 namespace UserManagementLibrary.Utility
 {
-    /// <summary>
-    /// Provides utility methods for console interactions.
-    /// </summary>
     public static class ConsoleUtility
     {
         public static void SetUnicodeConsole()
@@ -12,30 +9,23 @@ namespace UserManagementLibrary.Utility
             Console.OutputEncoding = System.Text.Encoding.UTF8;
         }
 
-        public static void WriteTitle(string title, ConsoleColor? titleColor = null, string beginTitle = "", string endTitle = "")
+        public static void WriteTitle(string title, ConsoleColor titleColor = ConsoleColor.Green, string beginTitle = "", string endTitle = "")
         {
-            var previousColor = Console.ForegroundColor;
-
-            if (titleColor.HasValue)
-            {
-                Console.ForegroundColor = titleColor.Value;
-            }
-
-            Console.WriteLine(new string('-', title.Length));
-
+            Console.ForegroundColor = titleColor;
             Console.Write(beginTitle);
+            Console.WriteLine(new string('-', title.Length));
             Console.WriteLine(title.ToUpper());
             Console.WriteLine(new string('-', title.Length));
-
             Console.Write(endTitle);
-            Console.ForegroundColor = previousColor; // Reset to previous color
-
+            Console.ForegroundColor = ConsoleColor.White;
             Console.WriteLine();
         }
 
-        public static void WriteMessage(string message, string beginMessage = "", string endMessage = "")
+        public static void WriteMessage(string message, ConsoleColor messageColor = ConsoleColor.White, string beginMessage = "", string endMessage = "")
         {
+            Console.ForegroundColor = messageColor;
             Console.Write($"{beginMessage}{message}{endMessage}");
+            Console.ForegroundColor = ConsoleColor.White;
         }
 
         public static void TerminateConsole()
@@ -49,12 +39,14 @@ namespace UserManagementLibrary.Utility
 
         public static void PauseConsole()
         {
-            Console.Clear();
+            Console.Clear();  // Limpa o console para preparar o próximo menu
             Console.ForegroundColor = ConsoleColor.Red;
-            WriteMessage("\nPress any key to continue...");
-            Console.ReadLine();
-            Console.ForegroundColor = ConsoleColor.White;
+            WriteMessage("\nPress any key to continue...", ConsoleColor.Red);  // Mensagem em vermelho
+            Console.ReadKey();  // Aguarda uma tecla
+            Console.Clear();
+            Console.ForegroundColor = ConsoleColor.White;  // Restaura a cor padrão
         }
+
 
         public static string ReadPassword()
         {

@@ -3,213 +3,142 @@ using UserManagementLibrary.Models;
 using UserManagementLibrary.Services;
 using UserManagementLibrary.Utility;
 
-namespace UserManagement
+class Program
 {
-    class Program
+    static UserManager userManager = new UserManager();
+    static User loggedInUser;
+
+    static void Main()
     {
-        private static UserManager userManager = new UserManager();
-        private static User currentUser;
+        ConsoleUtility.SetUnicodeConsole();
 
-        static void Main(string[] args)
+        while (true)
         {
-            ConsoleUtility.SetUnicodeConsole();
-            Login();
-            ShowMainMenu();
-        }
-
-        private static void Login()
-        {
-            ConsoleUtility.WriteTitle("Login", ConsoleColor.Green, "", "\n");
-
-            Console.Write("UserName: ");
-            string userName = Console.ReadLine();
-            Console.Write("Password: ");
-            string password = ConsoleUtility.ReadPassword();
-
-            var user = userManager.GetUser(userName);
-
-            if (user != null && user.Password == password)
+            if (loggedInUser == null)
             {
-                currentUser = user;
-                // Cor do cabeçalho conforme o perfil do usuário
-                ConsoleColor welcomeColor = GetWelcomeColor(user.Role);
-                ConsoleUtility.WriteTitle($"Welcome, {currentUser.FullName} ({currentUser.Role})", welcomeColor, "", "\n");
+                ShowLoginMenu();
             }
             else
             {
-                ConsoleUtility.WriteTitle("Invalid credentials", ConsoleColor.Red, "", "\n");
-                ConsoleUtility.TerminateConsole();
+                ShowUserMenu();
+            }
+        }
+    }
+
+    static void ShowLoginMenu()
+    {
+        ConsoleUtility.WriteTitle("Login Menu", ConsoleColor.Green, "\n", "\n");
+
+        ConsoleUtility.WriteMessage("1. Login\n2. Exit", ConsoleColor.White, "\n", "\n\n"); // Cor padrão
+        ConsoleUtility.WriteMessage("Select an option: ");
+        Console.ResetColor(); // Reseta a cor para o padrão após o prompt
+
+        string option = Console.ReadLine();
+
+        switch (option)
+        {
+            case "1":
+                PerformLogin();
+                break;
+            case "2":
                 Environment.Exit(0);
-            }
+                break;
+            default:
+                ConsoleUtility.WriteMessage("Invalid option. Please try again.", ConsoleColor.Red, "", "\n");
+                ConsoleUtility.PauseConsole();
+                Console.Clear();
+                break;
         }
+    }
 
-        private static ConsoleColor GetWelcomeColor(UserRole role)
+    static void PerformLogin()
+    {
+        Console.Clear();
+        ConsoleUtility.WriteTitle("Login", ConsoleColor.Green, "\n", "\n");
+        ConsoleUtility.WriteMessage("Enter Username: ", ConsoleColor.White);
+        string username = Console.ReadLine();
+        ConsoleUtility.WriteMessage("Enter Password: ", ConsoleColor.White);
+        string password = ConsoleUtility.ReadPassword();
+
+        var user = userManager.GetUser(username);
+
+        if (user != null && user.Password == password)
         {
-            // Define a cor do cabeçalho com base no perfil do usuário
-            switch (role)
-            {
-                case UserRole.Admin:
-                    return ConsoleColor.Blue;
-                case UserRole.PowerUser:
-                    return ConsoleColor.Cyan;
-                case UserRole.SimpleUser:
-                    return ConsoleColor.Yellow;
-                default:
-                    return ConsoleColor.White; // Cor padrão se o perfil não for reconhecido
-            }
+            loggedInUser = user;
+            ConsoleUtility.WriteTitle($"Welcome {loggedInUser.FullName}", GetUserColor(loggedInUser.Role), "", "\n");
+            Console.Clear(); // Clear the screen after successful login
         }
-
-        private static void ShowMainMenu()
+        else
         {
-            while (true)
-            {
-                switch (currentUser.Role)
-                {
-                    case UserRole.Admin:
-                        ShowAdminMenu();
-                        break;
-                    case UserRole.PowerUser:
-                        ShowPowerUserMenu();
-                        break;
-                    case UserRole.SimpleUser:
-                        ShowSimpleUserMenu();
-                        break;
-                }
-            }
+            ConsoleUtility.WriteMessage("Invalid username or password. Try again.", ConsoleColor.Red, "\n", "\n");
         }
+    }
 
-        private static void ShowAdminMenu()
+    static void ShowUserMenu()
+    {
+        ConsoleUtility.WriteTitle("User Menu", GetUserColor(loggedInUser.Role), "", "\n\n");
+
+        // Menus e prompts não coloridos, com espaçamento
+        ConsoleUtility.WriteMessage("1. List Users\n2. Change Password\n3. Logout\n0. Exit", ConsoleColor.White, "", "\n\n"); // Cor padrão
+
+        // Define o prompt com a cor do usuário logado
+        Console.ForegroundColor = GetUserColor(loggedInUser.Role);
+        Console.Write($"{loggedInUser.UserName}> ");
+        Console.ResetColor(); // Reseta a cor para o padrão após o prompt
+
+        string option = Console.ReadLine();
+
+        switch (option)
         {
-            ConsoleUtility.WriteTitle("Admin Menu", ConsoleColor.Blue, "", "\n");
-
-            Console.WriteLine("1. Create User");
-            Console.WriteLine("2. List Users");
-            Console.WriteLine("3. Search User by UserName");
-            Console.WriteLine("4. Exit");
-            Console.Write("Select an option: ");
-
-            var choice = Console.ReadLine();
-
-            switch (choice)
-            {
-                case "1":
-                    CreateUser();
-                    break;
-                case "2":
-                    userManager.ListUsers();
-                    ConsoleUtility.PauseConsole();
-                    break;
-                case "3":
-                    SearchUser();
-                    break;
-                case "4":
-                    ConsoleUtility.TerminateConsole();
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine("Invalid option. Try again.");
-                    break;
-            }
+            case "1":
+                Console.Clear();
+                userManager.ListUsers();
+                ConsoleUtility.PauseConsole();
+                break;
+            case "2":
+                ChangePassword();
+                break;
+            case "3":
+                loggedInUser = null;
+                ConsoleUtility.WriteMessage("Logged out successfully.\n", ConsoleColor.Cyan);
+                ConsoleUtility.PauseConsole();
+                break;
+            case "0":
+                Environment.Exit(0);
+                break;
+            default:
+                ConsoleUtility.WriteMessage("Invalid option. Please try again.\n", ConsoleColor.Red);
+                ConsoleUtility.PauseConsole();
+                break;
         }
+    }
 
-        private static void ShowPowerUserMenu()
+    static ConsoleColor GetUserColor(UserRole role)
+    {
+        switch (role)
         {
-            ConsoleUtility.WriteTitle("Power User Menu", ConsoleColor.Cyan, "", "\n");
-
-            Console.WriteLine("1. List Users");
-            Console.WriteLine("2. Search User by UserName");
-            Console.WriteLine("3. Exit");
-            Console.Write("Select an option: ");
-
-            var choice = Console.ReadLine();
-
-            switch (choice)
-            {
-                case "1":
-                    userManager.ListUsers();
-                    ConsoleUtility.PauseConsole();
-                    break;
-                case "2":
-                    SearchUser();
-                    break;
-                case "3":
-                    ConsoleUtility.TerminateConsole();
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine("Invalid option. Try again.");
-                    break;
-            }
+            case UserRole.Admin:
+                return ConsoleColor.Blue;
+            case UserRole.PowerUser:
+                return ConsoleColor.Yellow;
+            case UserRole.SimpleUser:
+                return ConsoleColor.Cyan;
+            default:
+                return ConsoleColor.White;
         }
+    }
 
-        private static void ShowSimpleUserMenu()
-        {
-            ConsoleUtility.WriteTitle("Simple User Menu", ConsoleColor.Yellow, "", "\n");
+    static void ChangePassword()
+    {
+        ConsoleUtility.WriteTitle("Change Password", GetUserColor(loggedInUser.Role), "\n\n", "\n");
 
-            Console.WriteLine("1. List Users");
-            Console.WriteLine("2. Exit");
-            Console.Write("Select an option: ");
+        ConsoleUtility.WriteMessage("Enter new password: ", GetUserColor(loggedInUser.Role));
+        string newPassword = ConsoleUtility.ReadPassword();
 
-            var choice = Console.ReadLine();
+        // Aqui você pode adicionar a lógica para atualizar a senha no UserManager
 
-            switch (choice)
-            {
-                case "1":
-                    userManager.ListUsers();
-                    ConsoleUtility.PauseConsole();
-                    break;
-                case "2":
-                    ConsoleUtility.TerminateConsole();
-                    Environment.Exit(0);
-                    break;
-                default:
-                    Console.WriteLine("Invalid option. Try again.");
-                    break;
-            }
-        }
-
-        private static void CreateUser()
-        {
-            Console.Write("Enter Full Name: ");
-            string fullName = Console.ReadLine();
-            Console.Write("Enter UserName: ");
-            string userName = Console.ReadLine();
-            Console.Write("Enter Password: ");
-            string password = ConsoleUtility.ReadPassword();
-
-            UserRole role;
-            while (true)
-            {
-                Console.Write("Enter Role (Admin, PowerUser, SimpleUser): ");
-                var roleInput = Console.ReadLine();
-
-                if (Enum.TryParse(roleInput, true, out role) && Enum.IsDefined(typeof(UserRole), role))
-                {
-                    break;
-                }
-                Console.WriteLine("Invalid role. Try again.");
-            }
-
-            userManager.CreateUser(fullName, userName, password, role);
-            ConsoleUtility.WriteTitle("User created successfully", ConsoleColor.Green);
-            ConsoleUtility.PauseConsole();
-        }
-
-        private static void SearchUser()
-        {
-            Console.Write("Enter UserName to search: ");
-            string userName = Console.ReadLine();
-            var user = userManager.GetUser(userName);
-
-            if (user != null)
-            {
-                Console.WriteLine($"Full Name: {user.FullName}, UserName: {user.UserName}, Role: {user.Role}");
-            }
-            else
-            {
-                Console.WriteLine("User not found.");
-            }
-            ConsoleUtility.PauseConsole();
-        }
+        ConsoleUtility.WriteMessage("Password changed successfully.\n", ConsoleColor.Green);
+        ConsoleUtility.PauseConsole();
+        Console.Clear();
     }
 }
