@@ -11,9 +11,9 @@ namespace UserManagementLibrary.Services
         public UserManager()
         {
             // Criação dos usuários iniciais
-            users.Add(new User { FullName = "Administrator", UserName = "admin", Password = "admin", Role = UserRole.Admin });
-            users.Add(new User { FullName = "Power User", UserName = "poweruser", Password = "poweruser", Role = UserRole.PowerUser });
-            users.Add(new User { FullName = "Simple User", UserName = "simpleuser", Password = "simpleuser", Role = UserRole.SimpleUser });
+            users.Add(new User { FullName = "Jeremias Freitas Resende", UserName = "ADjeremias24", Password = "queroferias", Role = UserRole.Admin });
+            users.Add(new User { FullName = "Antónia Amaral Dias", UserName = "PUantonia13", Password = "tbqueroferias", Role = UserRole.PowerUser });
+            users.Add(new User { FullName = "Marcelo Rebelo Sousa", UserName = "SUmarcelo02", Password = "feriasopoano", Role = UserRole.SimpleUser });
         }
 
         public void CreateUser(string fullName, string userName, string password, UserRole role)

@@ -2,6 +2,9 @@
 
 namespace UserManagementLibrary.Utility
 {
+    /// <summary>
+    /// Provides utility methods for console interactions.
+    /// </summary>
     public static class ConsoleUtility
     {
         public static void SetUnicodeConsole()
@@ -9,23 +12,24 @@ namespace UserManagementLibrary.Utility
             Console.OutputEncoding = System.Text.Encoding.UTF8;
         }
 
-        public static void WriteTitle(string title, string beginTitle = "", string endTitle = "")
+        public static void WriteTitle(string title, ConsoleColor? titleColor = null, string beginTitle = "", string endTitle = "")
         {
-            Console.ForegroundColor = ConsoleColor.Green;
+            var previousColor = Console.ForegroundColor;
 
-            if (!string.IsNullOrEmpty(beginTitle))
+            if (titleColor.HasValue)
             {
-                Console.WriteLine(beginTitle);
+                Console.ForegroundColor = titleColor.Value;
             }
+
             Console.WriteLine(new string('-', title.Length));
+
+            Console.Write(beginTitle);
             Console.WriteLine(title.ToUpper());
             Console.WriteLine(new string('-', title.Length));
-            if (!string.IsNullOrEmpty(endTitle))
-            {
-                Console.WriteLine(endTitle);
-            }
 
-            Console.ForegroundColor = ConsoleColor.White;
+            Console.Write(endTitle);
+            Console.ForegroundColor = previousColor; // Reset to previous color
+
             Console.WriteLine();
         }
 
