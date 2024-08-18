@@ -1,10 +1,9 @@
 ﻿using System;
-using UserManagementLibrary.Menus;
 using UserManagementLibrary.Models;
 using UserManagementLibrary.Services;
 using UserManagementLibrary.Utility;
 
-namespace UserManagementLibrary.Services
+namespace UserManagementLibrary.Menus
 {
     public class SimpleUserMenu : IUserMenu
     {
@@ -21,11 +20,36 @@ namespace UserManagementLibrary.Services
         {
             ConsoleUtility.WriteTitle("Simple User Menu", ConsoleColor.Cyan);
 
-            // Exemplo de operação de menu
-            Console.WriteLine("1. View your profile");
-            Console.WriteLine("2. Update your details");
-            // Adicionar lógica para cada opção
+            while (true)
+            {
+                ConsoleUtility.WriteMessage("1. View All Users", ConsoleColor.Cyan);
+                ConsoleUtility.WriteMessage("2. Exit", ConsoleColor.Cyan);
 
+                Console.Write("Select an option: ");
+                string choice = Console.ReadLine();
+
+                switch (choice)
+                {
+                    case "1":
+                        ViewAllUsers();
+                        break;
+                    case "2":
+                        return; // Exit the menu
+                    default:
+                        ConsoleUtility.WriteMessage("Invalid choice. Please try again.", ConsoleColor.Red);
+                        ConsoleUtility.PauseConsole();
+                        break;
+                }
+            }
+        }
+
+        private void ViewAllUsers()
+        {
+            var users = userManager.GetAllUsers();
+            foreach (var user in users)
+            {
+                Console.WriteLine($"ID: {user.Id}, FullName: {user.FullName}, Username: {user.UserName}, Role: {user.Role}");
+            }
             ConsoleUtility.PauseConsole();
         }
     }

@@ -1,5 +1,4 @@
 ﻿using System;
-using System.Linq;
 using UserManagementLibrary.Models;
 using UserManagementLibrary.Services;
 using UserManagementLibrary.Utility;
@@ -19,14 +18,17 @@ namespace UserManagementLibrary.Menus
 
         public void ShowMenu()
         {
+            ConsoleUtility.WriteTitle("Admin Menu", ConsoleColor.Cyan);
+
             while (true)
             {
-                ConsoleUtility.WriteTitle("Admin Menu", ConsoleColor.Cyan);
+                ConsoleUtility.WriteMessage("1. View All Users", ConsoleColor.Cyan);
+                ConsoleUtility.WriteMessage("2. Search Users by Name", ConsoleColor.Cyan);
+                ConsoleUtility.WriteMessage("3. Create User", ConsoleColor.Cyan);
+                ConsoleUtility.WriteMessage("4. Update User Profile", ConsoleColor.Cyan);
+                ConsoleUtility.WriteMessage("5. Exit", ConsoleColor.Cyan);
 
-                Console.WriteLine("1. View all users");
-                Console.WriteLine("2. Search users");
-                Console.WriteLine("3. Logout");
-
+                Console.Write("Select an option: ");
                 string choice = Console.ReadLine();
 
                 switch (choice)
@@ -35,14 +37,18 @@ namespace UserManagementLibrary.Menus
                         ViewAllUsers();
                         break;
                     case "2":
-                        SearchUsers();
+                        SearchUsersByName();
                         break;
                     case "3":
-                        ConsoleUtility.WriteMessage("Logging out...", ConsoleColor.Green);
-                        ConsoleUtility.PauseConsole();
-                        return; // Exit the menu and log out
+                        CreateUser();
+                        break;
+                    case "4":
+                        UpdateUserProfile();
+                        break;
+                    case "5":
+                        return; // Exit the menu
                     default:
-                        ConsoleUtility.WriteMessage("Invalid option, please try again.", ConsoleColor.Red);
+                        ConsoleUtility.WriteMessage("Invalid choice. Please try again.", ConsoleColor.Red);
                         ConsoleUtility.PauseConsole();
                         break;
                 }
@@ -51,44 +57,35 @@ namespace UserManagementLibrary.Menus
 
         private void ViewAllUsers()
         {
-            ConsoleUtility.WriteTitle("All Users", ConsoleColor.Yellow);
-
-            var users = userManager.GetAllUsers(); // This method should be available in UserManager
-
-            if (users.Any())
+            var users = userManager.GetAllUsers();
+            foreach (var user in users)
             {
-                foreach (var user in users)
-                {
-                    Console.WriteLine($"Username: {user.UserName}, Full Name: {user.FullName}, Role: {user.Role}");
-                }
+                Console.WriteLine($"ID: {user.Id}, FullName: {user.FullName}, Username: {user.UserName}, Role: {user.Role}");
             }
-            else
-            {
-                ConsoleUtility.WriteMessage("No users found.", ConsoleColor.Red);
-            }
-
             ConsoleUtility.PauseConsole();
         }
 
-        private void SearchUsers()
+        private void SearchUsersByName()
         {
-            ConsoleUtility.WriteTitle("Search Users", ConsoleColor.Yellow);
+            Console.Write("Enter name to search: ");
+            string name = Console.ReadLine();
+            var users = userManager.SearchUsersByFullName(name);
 
-            Console.Write("Enter username to search: ");
-            string username = Console.ReadLine();
-
-            User user = userManager.GetUser(username);
-
-            if (user != null)
+            foreach (var user in users)
             {
-                Console.WriteLine($"Username: {user.UserName}, Full Name: {user.FullName}, Role: {user.Role}");
+                Console.WriteLine($"ID: {user.Id}, FullName: {user.FullName}, Username: {user.UserName}, Role: {user.Role}");
             }
-            else
-            {
-                ConsoleUtility.WriteMessage("User not found.", ConsoleColor.Red);
-            }
-
             ConsoleUtility.PauseConsole();
+        }
+
+        private void CreateUser()
+        {
+            // Implementation for creating a user
+        }
+
+        private void UpdateUserProfile()
+        {
+            // Implementation for updating user profile
         }
     }
 }
