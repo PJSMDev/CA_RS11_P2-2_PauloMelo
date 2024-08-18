@@ -5,6 +5,10 @@ using UserManagementLibrary.Utility;
 
 namespace UserManagementLibrary.Services
 {
+
+    /// <summary>
+    /// Represents the menu for administrators.
+    /// </summary>
     public class AdminMenu : IUserMenu
     {
         private readonly UserManager userManager;
@@ -16,6 +20,11 @@ namespace UserManagementLibrary.Services
             this.loggedInUser = loggedInUser;
         }
 
+        #region Menu Methods
+
+        /// <summary>
+        /// Displays the admin menu and handles user input.
+        /// </summary>
         public void ShowMenu()
         {
             ConsoleUtility.WriteTitle("Admin Menu", ConsoleColor.Cyan);
@@ -49,6 +58,9 @@ namespace UserManagementLibrary.Services
             }
         }
 
+        /// <summary>
+        /// Displays all users.
+        /// </summary>
         private void ViewAllUsers()
         {
             var users = userManager.GetAllUsers(); // Obtem todos os utilizadores
@@ -87,6 +99,9 @@ namespace UserManagementLibrary.Services
             }
         }
 
+        /// <summary>
+        /// Searches for users by username and displays the result.
+        /// </summary>
         private void SearchUsersByUsername()
         {
             ConsoleUtility.WriteMessage("Enter username to search: ");
@@ -124,5 +139,7 @@ namespace UserManagementLibrary.Services
                 ConsoleUtility.PauseConsole();
             }
         }
+
+        #endregion
     }
 }

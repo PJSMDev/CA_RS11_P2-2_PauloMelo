@@ -5,6 +5,10 @@ using UserManagementLibrary.Utility;
 
 namespace UserManagementLibrary.Services
 {
+
+    /// <summary>
+    /// Represents the menu for power users.
+    /// </summary>
     public class PowerUserMenu : IUserMenu
     {
         private readonly UserManager userManager;
@@ -16,6 +20,12 @@ namespace UserManagementLibrary.Services
             this.loggedInUser = loggedInUser;
         }
 
+        #region Menu Methods
+
+
+        /// <summary>
+        /// Displays the power user menu and handles user input.
+        /// </summary>
         public void ShowMenu()
         {
             ConsoleUtility.WriteTitle("Power User Menu", ConsoleColor.Magenta);
@@ -46,6 +56,9 @@ namespace UserManagementLibrary.Services
             }
         }
 
+        /// <summary>
+        /// Searches for users by full name and displays the result.
+        /// </summary>
         private void SearchUsersByUsername()
         {
             ConsoleUtility.WriteMessage("Enter username to search: ");
@@ -83,5 +96,7 @@ namespace UserManagementLibrary.Services
                 ConsoleUtility.PauseConsole();
             }
         }
+
+        #endregion
     }
 }

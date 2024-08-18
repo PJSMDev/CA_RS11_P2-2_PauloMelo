@@ -5,18 +5,37 @@ using UserManagementLibrary.Utility;
 
 namespace UserManagementLibrary.Services
 {
+    /// <summary>
+    /// Represents the login menu for the application.
+    /// </summary>
     public class LoginMenu : IUserMenu
     {
         private readonly UserManager userManager;
         private User loggedInUser;
 
+        /// <summary>
+        /// Initializes a new instance of the <see cref="LoginMenu"/> class.
+        /// </summary>
+        /// <param name="userManager">The user manager to handle user operations.</param>
         public LoginMenu(UserManager userManager)
         {
             this.userManager = userManager;
         }
 
+        #region Properties
+
+        /// <summary>
+        /// Gets the currently logged-in user.
+        /// </summary>
         public User LoggedInUser => loggedInUser;
 
+        #endregion
+
+        #region Menu Methods
+
+        /// <summary>
+        /// Displays the login menu and handles user input.
+        /// </summary>
         public void ShowMenu()
         {
             ConsoleUtility.WriteTitle("Login Menu", ConsoleColor.Green);
@@ -51,6 +70,9 @@ namespace UserManagementLibrary.Services
             }
         }
 
+        /// <summary>
+        /// Handles the login process for the user.
+        /// </summary>
         private void HandleLogin()
         {
             Console.Clear();
@@ -77,5 +99,7 @@ namespace UserManagementLibrary.Services
                 ConsoleUtility.PauseConsole(); // Pause before retrying
             }
         }
+
+        #endregion
     }
 }

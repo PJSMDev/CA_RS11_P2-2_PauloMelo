@@ -4,8 +4,15 @@ using UserManagementLibrary.Services;
 using UserManagementLibrary.Menus;
 using UserManagementLibrary.Utility;
 
+/// <summary>
+/// The main entry point for the application.
+/// </summary>
 class Program
 {
+
+    /// <summary>
+    /// The main method that starts the application.
+    /// </summary>
     static void Main()
     {
         ConsoleUtility.SetUnicodeConsole();

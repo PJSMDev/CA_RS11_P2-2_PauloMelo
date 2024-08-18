@@ -5,6 +5,10 @@ using UserManagementLibrary.Utility;
 
 namespace UserManagementLibrary.Services
 {
+
+    /// <summary>
+    /// Represents the menu for simple users.
+    /// </summary>
     public class SimpleUserMenu : IUserMenu
     {
         private readonly UserManager userManager;
@@ -16,6 +20,11 @@ namespace UserManagementLibrary.Services
             this.loggedInUser = loggedInUser;
         }
 
+        #region Menu Methods
+
+        /// <summary>
+        /// Displays the simple user menu and handles user input.
+        /// </summary>
         public void ShowMenu()
         {
             ConsoleUtility.WriteTitle("Simple User Menu", ConsoleColor.Gray);
@@ -46,6 +55,9 @@ namespace UserManagementLibrary.Services
             }
         }
 
+        /// <summary>
+        /// Displays all users.
+        /// </summary>
         private void ListUsers()
         {
             var users = userManager.GetAllUsers(); // Obtem todos os utilizadores
@@ -84,5 +96,7 @@ namespace UserManagementLibrary.Services
                 ConsoleUtility.PauseConsole();
             }
         }
+
+        #endregion
     }
 }
