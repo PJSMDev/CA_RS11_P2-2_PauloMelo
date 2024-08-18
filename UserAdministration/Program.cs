@@ -1,6 +1,20 @@
 ﻿/*
- README: logins dos utilizadores
- */
+ ## Informações de Login e Password
+
+ Para facilitar o acesso à aplicação, aqui estão as credenciais de login:
+
+ ### Credenciais Administrador
+ - **Nome de Usuário:** admin
+ - **Password:** [SuaSenhaAqui]
+
+ ### Credenciais Power User
+ - **Nome de Usuário:** poweruser
+ - **Password:** [SuaSenhaAqui]
+
+ ### Credenciais Simple User
+ - **Nome de Usuário:** simpleuser
+ - **Password:** [SuaSenhaAqui]
+*/
 
 using System;
 using System.Collections.Generic;
