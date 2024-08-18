@@ -2,9 +2,6 @@
 
 namespace UserManagementLibrary.Utility
 {
-    /// <summary>
-    /// Provides utility methods for console interactions.
-    /// </summary>
     public static class ConsoleUtility
     {
         public static void SetUnicodeConsole()
@@ -16,15 +13,19 @@ namespace UserManagementLibrary.Utility
         {
             Console.ForegroundColor = ConsoleColor.Green;
 
+            if (!string.IsNullOrEmpty(beginTitle))
+            {
+                Console.WriteLine(beginTitle);
+            }
             Console.WriteLine(new string('-', title.Length));
-
-            Console.Write(beginTitle);
             Console.WriteLine(title.ToUpper());
             Console.WriteLine(new string('-', title.Length));
+            if (!string.IsNullOrEmpty(endTitle))
+            {
+                Console.WriteLine(endTitle);
+            }
 
-            Console.Write(endTitle);
             Console.ForegroundColor = ConsoleColor.White;
-
             Console.WriteLine();
         }
 

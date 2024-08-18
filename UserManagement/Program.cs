@@ -1,198 +1,160 @@
 ﻿using System;
-using UserManagementLibrary.Models;
+using UserManagementLibrary.Utility;
+using User = UserManagementLibrary.Models.User;  // Usa o User do namespace Models
+using UserRole = UserManagementLibrary.Models.UserRole;  // Usa o UserRole do namespace Models
 using UserManagementLibrary.Services;
-using UserManagementLibrary.Utility; // Ajuste para o namespace correto
 
 namespace UserManagement
 {
     class Program
     {
+        private static UserManager userManager;
+        private static User currentUser;
+
         static void Main(string[] args)
         {
-            // Configura o console para usar UTF-8
             ConsoleUtility.SetUnicodeConsole();
+            userManager = new UserManager();
 
-            // Cria uma instância do UserManager
-            var userManager = new UserManager();
-            User loggedInUser = null;
+            // Criação dos usuários iniciais
+            InitializeUsers();
 
+            // Exemplo de login - pode ser substituído por uma funcionalidade de autenticação real
+            Login();
+
+            // Exibe o menu baseado no perfil do usuário
+            ShowMenu();
+        }
+
+        private static void InitializeUsers()
+        {
+            // Usuários iniciais são criados no construtor do UserManager
+        }
+
+        private static void Login()
+        {
+            // Exemplo simples de login (deveria ser substituído por um processo real de autenticação)
+            ConsoleUtility.WriteTitle("Login", "\n", "\n");
+            ConsoleUtility.WriteMessage("Enter username: ", "", "");
+            string userName = Console.ReadLine();
+            ConsoleUtility.WriteMessage("Enter password: ", "", "");
+            string password = ConsoleUtility.ReadPassword();
+
+            // Verifica se o usuário existe e autentica (aqui é apenas um exemplo simples)
+            currentUser = userManager.GetUser(userName);
+            if (currentUser == null || currentUser.Password != password)
+            {
+                Console.WriteLine("Invalid credentials.");
+                ConsoleUtility.TerminateConsole();
+                return;
+            }
+
+            Console.WriteLine($"Welcome, {currentUser.FullName}!");
+        }
+
+        private static void ShowMenu()
+        {
             while (true)
             {
                 Console.Clear();
-                ConsoleUtility.WriteTitle("Login Menu", "Welcome to ", " Login System");
-                Console.WriteLine("1. Login");
-                Console.WriteLine("2. Exit");
-                Console.Write("Choose an option: ");
-                var choice = Console.ReadLine();
+                ConsoleUtility.WriteTitle($"{currentUser.Role} Menu", "\n", "\n");
 
-                if (choice == "2")
-                    break;
-
-                if (choice == "1")
+                if (currentUser.Role == UserRole.Admin)
                 {
-                    Console.Write("Username: ");
-                    var username = Console.ReadLine();
-                    Console.Write("Password: ");
-                    var password = ConsoleUtility.ReadPassword();
+                    ConsoleUtility.WriteMessage("1. Create User\n2. Search User\n3. List Users\n4. Exit\n", "", "");
+                }
+                else if (currentUser.Role == UserRole.PowerUser)
+                {
+                    ConsoleUtility.WriteMessage("1. Search User\n2. List Users\n3. Exit\n", "", "");
+                }
+                else if (currentUser.Role == UserRole.SimpleUser)
+                {
+                    ConsoleUtility.WriteMessage("1. List Users\n2. Exit\n", "", "");
+                }
 
-                    loggedInUser = userManager.GetUserByUsername(username);
+                ConsoleUtility.WriteMessage("Select an option: ", "", "");
+                string input = Console.ReadLine();
 
-                    if (loggedInUser != null && loggedInUser.Password == password)
-                    {
-                        Console.Clear();
-                        SetConsoleColorForProfile(loggedInUser.Profile);
-                        ConsoleUtility.WriteTitle($"Logged in as {loggedInUser.Username} ({loggedInUser.Profile})");
-
-                        while (true)
+                switch (input)
+                {
+                    case "1":
+                        if (currentUser.Role == UserRole.Admin)
                         {
-                            Console.WriteLine();
-                            Console.WriteLine("1. List Users");
-                            if (loggedInUser.Profile == UserProfile.Admin)
-                            {
-                                Console.WriteLine("2. Add User");
-                                Console.WriteLine("3. Remove User");
-                                Console.WriteLine("4. Search User by ID");
-                                Console.WriteLine("5. Search User by Username");
-                            }
-                            Console.WriteLine("0. Logout");
-                            Console.Write("Choose an option: ");
-                            var userChoice = Console.ReadLine();
-
-                            if (userChoice == "0")
-                                break;
-
-                            switch (userChoice)
-                            {
-                                case "1":
-                                    ListUsers(userManager);
-                                    break;
-                                case "2":
-                                    if (loggedInUser.Profile == UserProfile.Admin)
-                                        AddUser(userManager);
-                                    else
-                                        ConsoleUtility.WriteMessage("Permission denied.", "", "\n");
-                                    break;
-                                case "3":
-                                    if (loggedInUser.Profile == UserProfile.Admin)
-                                        RemoveUser(userManager);
-                                    else
-                                        ConsoleUtility.WriteMessage("Permission denied.", "", "\n");
-                                    break;
-                                case "4":
-                                    if (loggedInUser.Profile == UserProfile.Admin)
-                                        SearchUserById(userManager);
-                                    else
-                                        ConsoleUtility.WriteMessage("Permission denied.", "", "\n");
-                                    break;
-                                case "5":
-                                    if (loggedInUser.Profile == UserProfile.Admin)
-                                        SearchUserByUsername(userManager);
-                                    else
-                                        ConsoleUtility.WriteMessage("Permission denied.", "", "\n");
-                                    break;
-                                default:
-                                    ConsoleUtility.WriteMessage("Invalid option.", "", "\n");
-                                    break;
-                            }
-
-                            ConsoleUtility.PauseConsole();
+                            CreateUser();
                         }
-                    }
-                    else
-                    {
-                        ConsoleUtility.WriteMessage("Invalid credentials.", "", "\n");
-                        ConsoleUtility.PauseConsole();
-                    }
+                        else if (currentUser.Role == UserRole.PowerUser)
+                        {
+                            SearchUser();
+                        }
+                        else if (currentUser.Role == UserRole.SimpleUser)
+                        {
+                            ListUsers();
+                        }
+                        break;
+                    case "2":
+                        if (currentUser.Role == UserRole.Admin || currentUser.Role == UserRole.PowerUser)
+                        {
+                            SearchUser();
+                        }
+                        else if (currentUser.Role == UserRole.SimpleUser)
+                        {
+                            ListUsers();
+                        }
+                        break;
+                    case "3":
+                        if (currentUser.Role == UserRole.Admin || currentUser.Role == UserRole.PowerUser)
+                        {
+                            ListUsers();
+                        }
+                        break;
+                    case "4":
+                        ConsoleUtility.TerminateConsole();
+                        return;
+                    default:
+                        Console.WriteLine("Invalid option. Please try again.");
+                        break;
                 }
             }
-
-            ConsoleUtility.TerminateConsole();
         }
 
-        static void SetConsoleColorForProfile(UserProfile profile)
+        private static void CreateUser()
         {
-            switch (profile)
+            ConsoleUtility.WriteMessage("Enter full name: ", "", "");
+            string fullName = Console.ReadLine();
+            ConsoleUtility.WriteMessage("Enter username: ", "", "");
+            string userName = Console.ReadLine();
+            ConsoleUtility.WriteMessage("Enter password: ", "", "");
+            string password = ConsoleUtility.ReadPassword();
+            ConsoleUtility.WriteMessage("Enter role (Admin, PowerUser, SimpleUser): ", "", "");
+            string roleInput = Console.ReadLine();
+            if (Enum.TryParse(roleInput, true, out UserRole role))  // Ignora maiúsculas/minúsculas
             {
-                case UserProfile.Admin:
-                    Console.ForegroundColor = ConsoleColor.Red;
-                    Console.BackgroundColor = ConsoleColor.Black;
-                    break;
-                case UserProfile.PowerUser:
-                    Console.ForegroundColor = ConsoleColor.Blue;
-                    Console.BackgroundColor = ConsoleColor.White;
-                    break;
-                case UserProfile.SimpleUser:
-                    Console.ForegroundColor = ConsoleColor.Green;
-                    Console.BackgroundColor = ConsoleColor.Gray;
-                    break;
-            }
-        }
-
-        static void ListUsers(UserManager userManager)
-        {
-            var users = userManager.ListUsers();
-            foreach (var user in users)
-            {
-                Console.WriteLine(user);
-            }
-        }
-
-        static void AddUser(UserManager userManager)
-        {
-            Console.Write("Username: ");
-            var username = Console.ReadLine();
-            Console.Write("Password: ");
-            var password = ConsoleUtility.ReadPassword();
-            Console.Write("Profile (Admin, PowerUser, SimpleUser): ");
-            var profile = (UserProfile)Enum.Parse(typeof(UserProfile), Console.ReadLine(), true);
-
-            var user = new User(0, username, password, profile);
-            userManager.AddUser(user);
-            ConsoleUtility.WriteMessage("User added successfully.", "", "\n");
-        }
-
-        static void RemoveUser(UserManager userManager)
-        {
-            Console.Write("User ID: ");
-            if (int.TryParse(Console.ReadLine(), out var id))
-            {
-                if (userManager.RemoveUser(id))
-                    ConsoleUtility.WriteMessage("User removed successfully.", "", "\n");
-                else
-                    ConsoleUtility.WriteMessage("User not found.", "", "\n");
+                userManager.CreateUser(fullName, userName, password, role);
             }
             else
             {
-                ConsoleUtility.WriteMessage("Invalid ID.", "", "\n");
+                Console.WriteLine("Invalid role.");
             }
         }
 
-        static void SearchUserById(UserManager userManager)
+        private static void SearchUser()
         {
-            Console.Write("User ID: ");
-            if (int.TryParse(Console.ReadLine(), out var id))
-            {
-                var user = userManager.GetUserById(id);
-                if (user != null)
-                    Console.WriteLine(user);
-                else
-                    ConsoleUtility.WriteMessage("User not found.", "", "\n");
-            }
-            else
-            {
-                ConsoleUtility.WriteMessage("Invalid ID.", "", "\n");
-            }
-        }
-
-        static void SearchUserByUsername(UserManager userManager)
-        {
-            Console.Write("Username: ");
-            var username = Console.ReadLine();
-            var user = userManager.GetUserByUsername(username);
+            ConsoleUtility.WriteMessage("Enter username to search: ", "", "");
+            string userName = Console.ReadLine();
+            var user = userManager.GetUser(userName);
             if (user != null)
-                Console.WriteLine(user);
+            {
+                Console.WriteLine($"Full Name: {user.FullName}, UserName: {user.UserName}, Role: {user.Role}");
+            }
             else
-                ConsoleUtility.WriteMessage("User not found.", "", "\n");
+            {
+                Console.WriteLine("User not found.");
+            }
+        }
+
+        private static void ListUsers()
+        {
+            userManager.ListUsers();
         }
     }
 }

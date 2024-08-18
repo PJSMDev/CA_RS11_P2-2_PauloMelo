@@ -1,5 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Linq;
 using UserManagementLibrary.Models;
 
@@ -7,50 +6,32 @@ namespace UserManagementLibrary.Services
 {
     public class UserManager
     {
-        private List<User> _users;
-        private int _nextId;
+        private readonly List<User> users = new List<User>();
 
         public UserManager()
         {
-            _users = new List<User>();
-            _nextId = 1;
-
-            // Criar utilizadores iniciais
-            _users.Add(new User(_nextId++, "admin", "adminpass", UserProfile.Admin));
-            _users.Add(new User(_nextId++, "poweruser", "powerpass", UserProfile.PowerUser));
-            _users.Add(new User(_nextId++, "simpleuser", "simplepass", UserProfile.SimpleUser));
+            // Criação dos usuários iniciais
+            users.Add(new User { FullName = "Administrator", UserName = "admin", Password = "admin", Role = UserRole.Admin });
+            users.Add(new User { FullName = "Power User", UserName = "poweruser", Password = "poweruser", Role = UserRole.PowerUser });
+            users.Add(new User { FullName = "Simple User", UserName = "simpleuser", Password = "simpleuser", Role = UserRole.SimpleUser });
         }
 
-        public void AddUser(User user)
+        public void CreateUser(string fullName, string userName, string password, UserRole role)
         {
-            user.Id = _nextId++;
-            _users.Add(user);
+            users.Add(new User { FullName = fullName, UserName = userName, Password = password, Role = role });
         }
 
-        public bool RemoveUser(int id)
+        public User GetUser(string userName)
         {
-            var user = _users.SingleOrDefault(u => u.Id == id);
-            if (user != null)
+            return users.FirstOrDefault(u => u.UserName == userName);
+        }
+
+        public void ListUsers()
+        {
+            foreach (var user in users)
             {
-                _users.Remove(user);
-                return true;
+                System.Console.WriteLine($"Full Name: {user.FullName}, UserName: {user.UserName}, Role: {user.Role}");
             }
-            return false;
-        }
-
-        public User GetUserById(int id)
-        {
-            return _users.SingleOrDefault(u => u.Id == id);
-        }
-
-        public User GetUserByUsername(string username)
-        {
-            return _users.SingleOrDefault(u => u.Username.Equals(username, StringComparison.OrdinalIgnoreCase));
-        }
-
-        public IEnumerable<User> ListUsers()
-        {
-            return _users;
         }
     }
 }
