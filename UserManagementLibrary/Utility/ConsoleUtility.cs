@@ -1,6 +1,6 @@
 ﻿using System;
 
-namespace UserAdministration.Utilities
+namespace UserManagementLibrary.Utility
 {
     /// <summary>
     /// Provides utility methods for console interactions.
