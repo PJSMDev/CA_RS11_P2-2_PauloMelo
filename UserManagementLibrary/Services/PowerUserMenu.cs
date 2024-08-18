@@ -1,9 +1,9 @@
 ﻿using System;
+using UserManagementLibrary.Menus;
 using UserManagementLibrary.Models;
-using UserManagementLibrary.Services;
 using UserManagementLibrary.Utility;
 
-namespace UserManagementLibrary.Menus
+namespace UserManagementLibrary.Services
 {
     public class PowerUserMenu : IUserMenu
     {
@@ -18,56 +18,70 @@ namespace UserManagementLibrary.Menus
 
         public void ShowMenu()
         {
-            ConsoleUtility.WriteTitle("Power User Menu", ConsoleColor.Cyan);
+            ConsoleUtility.WriteTitle("Power User Menu", ConsoleColor.Magenta);
 
             while (true)
             {
-                ConsoleUtility.WriteMessage("1. Search Users by Name", ConsoleColor.Cyan);
-                ConsoleUtility.WriteMessage("2. View All Users", ConsoleColor.Cyan);
-                ConsoleUtility.WriteMessage("3. Exit", ConsoleColor.Cyan);
+                ConsoleUtility.WriteMessage("1. Search Users by Username\n2. Exit\n", ConsoleColor.White, "", "\n\n");
 
-                Console.Write("Select an option: ");
+                Console.ForegroundColor = ConsoleColor.Magenta; // Cor do prompt para Power User
+                Console.Write($"{loggedInUser.UserName}> ");
+                Console.ResetColor(); // Restaura a cor padrão após o prompt
+
                 string choice = Console.ReadLine();
 
                 switch (choice)
                 {
                     case "1":
-                        SearchUsersByName();
+                        SearchUsersByUsername();
                         break;
                     case "2":
-                        ViewAllUsers();
-                        break;
-                    case "3":
-                        return; // Exit the menu
+                        ConsoleUtility.TerminateConsole();
+                        return;
                     default:
-                        ConsoleUtility.WriteMessage("Invalid choice. Please try again.", ConsoleColor.Red);
+                        ConsoleUtility.WriteMessage("Invalid option. Please try again.", ConsoleColor.Red, "\n", "\n");
                         ConsoleUtility.PauseConsole();
                         break;
                 }
             }
         }
 
-        private void SearchUsersByName()
+        private void SearchUsersByUsername()
         {
-            Console.Write("Enter name to search: ");
-            string name = Console.ReadLine();
-            var users = userManager.SearchUsersByFullName(name);
+            ConsoleUtility.WriteMessage("Enter username to search: ");
+            string username = Console.ReadLine();
 
-            foreach (var user in users)
+            var user = userManager.GetUser(username); // Buscar usuário pelo nome de usuário
+
+            if (user != null)
             {
+                ConsoleUtility.WriteTitle("User Found", ConsoleColor.Magenta);
                 Console.WriteLine($"ID: {user.Id}, FullName: {user.FullName}, Username: {user.UserName}, Role: {user.Role}");
             }
-            ConsoleUtility.PauseConsole();
-        }
-
-        private void ViewAllUsers()
-        {
-            var users = userManager.GetAllUsers();
-            foreach (var user in users)
+            else
             {
-                Console.WriteLine($"ID: {user.Id}, FullName: {user.FullName}, Username: {user.UserName}, Role: {user.Role}");
+                ConsoleUtility.WriteMessage("User not found.", ConsoleColor.Red, "\n", "\n");
             }
-            ConsoleUtility.PauseConsole();
+
+            ConsoleUtility.WriteMessage("1. Back\n2. Exit", ConsoleColor.White, "", "\n\n");
+            Console.Write($"{loggedInUser.UserName}> ");
+            string choice = Console.ReadLine();
+
+            if (choice == "1")
+            {
+                // Back to Power User Menu
+                return;
+            }
+            else if (choice == "2")
+            {
+                ConsoleUtility.TerminateConsole();
+                Environment.Exit(0); // Exit the application
+            }
+            else
+            {
+                ConsoleUtility.WriteMessage("Invalid option. Please try again.", ConsoleColor.Red, "\n", "\n");
+                ConsoleUtility.PauseConsole();
+            }
         }
     }
 }

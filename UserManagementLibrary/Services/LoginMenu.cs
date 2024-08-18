@@ -1,7 +1,6 @@
 ﻿using System;
 using UserManagementLibrary.Menus;
 using UserManagementLibrary.Models;
-using UserManagementLibrary.Services;
 using UserManagementLibrary.Utility;
 
 namespace UserManagementLibrary.Services
@@ -20,30 +19,62 @@ namespace UserManagementLibrary.Services
 
         public void ShowMenu()
         {
-            ConsoleUtility.WriteTitle("Login Menu", ConsoleColor.Green); // Alterar cor para verde
+            ConsoleUtility.WriteTitle("Login Menu", ConsoleColor.Green);
 
             while (true)
             {
-                Console.Write("Enter username: ");
-                string username = Console.ReadLine();
+                ConsoleUtility.WriteMessage("1. Enter Username\n2. Exit", ConsoleColor.White, "", "\n");
 
-                Console.Write("Enter password: ");
-                string password = ConsoleUtility.ReadPassword();
+                Console.Write("Choose an option: ");
+                string choice = Console.ReadLine();
 
-                User user = userManager.GetUser(username);
-
-                if (user != null && user.Password == password)
+                switch (choice)
                 {
-                    loggedInUser = user;
-                    ConsoleUtility.WriteMessage($"Welcome, {user.FullName}!", ConsoleColor.Green);
-                    ConsoleUtility.PauseConsole();
-                    return;  // Exit the loop and return to the caller
+                    case "1":
+                        HandleLogin();
+                        if (loggedInUser != null)
+                        {
+                            return; // Exit the menu if login is successful
+                        }
+                        break;
+
+                    case "2":
+                        ConsoleUtility.TerminateConsole();
+                        Environment.Exit(0); // Ensure the application exits
+                        break;
+
+                    default:
+                        ConsoleUtility.WriteMessage("Invalid option. Please try again.", ConsoleColor.Red, "\n", "\n");
+                        ConsoleUtility.PauseConsole();
+                        break;
                 }
-                else
-                {
-                    ConsoleUtility.WriteMessage("Invalid username or password", ConsoleColor.Red);
-                    ConsoleUtility.PauseConsole(); // Pause before retrying
-                }
+            }
+        }
+
+        private void HandleLogin()
+        {
+            Console.Clear();
+
+            ConsoleUtility.WriteTitle("Login", ConsoleColor.Green);
+
+            ConsoleUtility.WriteMessage("Enter Username: ");
+            string username = Console.ReadLine();
+
+            ConsoleUtility.WriteMessage("Enter password: ");
+            string password = ConsoleUtility.ReadPassword();
+
+            User user = userManager.GetUser(username);
+
+            if (user != null && user.Password == password)
+            {
+                loggedInUser = user;
+                ConsoleUtility.WriteMessage($"Welcome, {user.FullName}!", ConsoleColor.Green, "\n", "\n");
+                ConsoleUtility.PauseConsole();
+            }
+            else
+            {
+                ConsoleUtility.WriteMessage("Invalid username or password.", ConsoleColor.Red, "\n", "\n");
+                ConsoleUtility.PauseConsole(); // Pause before retrying
             }
         }
     }
