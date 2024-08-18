@@ -1,19 +1,14 @@
-﻿    using System;
-    using System.Collections.Generic;
-    using System.Linq;
-    using System.ComponentModel.DataAnnotations;
-    using System.ComponentModel.DataAnnotations.Schema;
-    using ClientManagement.Enums;
-    using ClientManagement.Models;
+﻿using ClientManagement.Enums;
+using System.ComponentModel.DataAnnotations;
 
-    namespace ClientManagement.Models
-    {
-        #region MembershipType Model
+namespace ClientManagement.Models
+{
+    #region MembershipType Model
 
-        /// <summary>
-        /// Represents a type of membership or payment option.
-        /// </summary>
-        public class MembershipType
+    /// <summary>
+    /// Represents a type of membership or payment option.
+    /// </summary>
+    public class MembershipType
         {
             #region Properties
 

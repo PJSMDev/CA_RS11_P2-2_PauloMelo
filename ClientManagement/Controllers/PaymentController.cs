@@ -41,13 +41,13 @@ namespace ClientManagement.Controllers
                     return NotFound();
                 }
 
-                // Calcular o valor com desconto
+                // Calculate discounted value.
                 decimal discountedAmount = _discountService.CalculateDiscount(client, payment.Amount);
 
-                // Atualizar o valor do pagamento com o desconto aplicado
+                // Reset the payment amount with the discount already applied.
                 payment.Amount = discountedAmount;
 
-                // Adicionar o pagamento ao contexto
+                // Adding the payment to the context
                 _context.Payments.Add(payment);
                 await _context.SaveChangesAsync();
 

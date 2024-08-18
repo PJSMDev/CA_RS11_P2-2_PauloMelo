@@ -28,6 +28,7 @@ namespace ClientManagement.DAL
         /// Configures the model creating process.
         /// </summary>
         /// <param name="modelBuilder">The model builder.</param>
+        /// <seealso href="https://learn.microsoft.com/en-us/ef/core/modeling/"/>
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             base.OnModelCreating(modelBuilder);

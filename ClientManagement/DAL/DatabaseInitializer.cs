@@ -17,6 +17,7 @@ namespace ClientManagement.DAL
         /// Initializes the database with default data if it is not already seeded.
         /// </summary>
         /// <param name="context">The database context to initialize.</param>
+        /// <seealso href="https://learn.microsoft.com/en-us/ef/core/modeling/data-seeding"/>
         public static void Initialize(ClientManagementDbContext context)
         {
             context.Database.EnsureCreated();
